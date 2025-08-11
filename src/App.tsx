@@ -1,4 +1,4 @@
-import { useState, type FunctionComponent } from "react";
+import { useEffect, useState, type FunctionComponent } from "react";
 import { GenericAutoFilterDropdown } from "./components/genericAutoFilterDropdown.component";
 
 const planets = [
@@ -13,18 +13,34 @@ const planets = [
 ];
 
 const App: FunctionComponent = () => {
+  const [users, setUsers] = useState([]);
   const [selectedPlanet, setSelectedPlanet] = useState("");
+  const [selectedUser, setSelectedUser] = useState("");
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data));
+  }, []);
 
   return (
     <>
       <h1>Generic auto-filter dropdown Demo</h1>
-      <h2>Planets</h2>
+      <h2>Planets by name</h2>
       <p>{`Selected planet : ${selectedPlanet}`}</p>
       <GenericAutoFilterDropdown
         listOfData={planets}
         keyLabel={"name"}
         placeholder={"Enter a Planet"}
         callback={setSelectedPlanet}
+      />
+      <h2>Users by email</h2>
+      <p>{`Selected user : ${selectedUser}`}</p>
+      <GenericAutoFilterDropdown
+        listOfData={users}
+        keyLabel={"email"}
+        placeholder={"Enter an email"}
+        callback={setSelectedUser}
       />
     </>
   );
