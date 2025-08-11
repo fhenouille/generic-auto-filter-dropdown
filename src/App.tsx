@@ -12,8 +12,32 @@ const planets = [
   { name: "Neptune", diameter_km: 49244 },
 ];
 
+type User = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+};
+
 const App: FunctionComponent = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [selectedPlanet, setSelectedPlanet] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
 
@@ -32,7 +56,7 @@ const App: FunctionComponent = () => {
         listOfData={planets}
         keyLabel={"name"}
         placeholder={"Enter a Planet"}
-        callback={setSelectedPlanet}
+        valueChange={(item) => setSelectedPlanet(item?.name ?? "")}
       />
       <h2>Users by email</h2>
       <p>{`Selected user : ${selectedUser}`}</p>
@@ -40,7 +64,9 @@ const App: FunctionComponent = () => {
         listOfData={users}
         keyLabel={"email"}
         placeholder={"Enter an email"}
-        callback={setSelectedUser}
+        valueChange={(item) =>
+          setSelectedUser(item?.email ? `${item?.name} - ${item?.email}` : "")
+        }
       />
     </>
   );
