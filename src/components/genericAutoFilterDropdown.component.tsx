@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, type JSX } from "react";
 
 interface GenericAutoFilterDropdownProps<T> {
   listOfData: T[];
@@ -32,6 +32,29 @@ export const GenericAutoFilterDropdown = <T,>({
     setDropdownIsVisible(false);
   };
 
+  //The matching portion(s) of the option label should be rendered in bold text
+  const handleBoldStyleOnOptionLabel = (label: string): JSX.Element => {
+    const matchingIndex = label.toLowerCase().indexOf(inputValue.toLowerCase());
+    if (matchingIndex === -1 || inputValue === "") {
+      return <>{label}</>;
+    }
+
+    const before = label.slice(0, matchingIndex);
+    const matchingPortion = label.slice(
+      matchingIndex,
+      matchingIndex + inputValue.length
+    );
+    const after = label.slice(matchingIndex + inputValue.length);
+
+    return (
+      <>
+        {before}
+        <strong>{matchingPortion}</strong>
+        {handleBoldStyleOnOptionLabel(after)}
+      </>
+    );
+  };
+
   return (
     <div className="generic-select">
       <input
@@ -48,7 +71,7 @@ export const GenericAutoFilterDropdown = <T,>({
               key={option[keyLabel] as string}
               onClick={() => handleSelect(option)}
             >
-              {option[keyLabel] as string}
+              {handleBoldStyleOnOptionLabel(option[keyLabel] as string)}
             </div>
           );
         })}
