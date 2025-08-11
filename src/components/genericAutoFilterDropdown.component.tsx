@@ -1,37 +1,34 @@
-import React, { useState, type FunctionComponent } from "react";
+import React, { useState } from "react";
 
-interface Planet {
-  name: string;
-  diameter_km: number;
+interface GenericAutoFilterDropdownProps<T> {
+  listOfData: T[];
+  keyLabel: keyof T;
+  placeholder: string;
 }
-
-const planets: Planet[] = [
-  { name: "Mercury", diameter_km: 4879 },
-  { name: "Venus", diameter_km: 12104 },
-  { name: "Earth", diameter_km: 12742 },
-  { name: "Mars", diameter_km: 6779 },
-  { name: "Jupiter", diameter_km: 139820 },
-  { name: "Saturn", diameter_km: 116460 },
-  { name: "Uranus", diameter_km: 50724 },
-  { name: "Neptune", diameter_km: 49244 },
-];
-
-export const GenericAutoFilterDropdown: FunctionComponent = () => {
+export const GenericAutoFilterDropdown = <T,>({
+  listOfData,
+  keyLabel,
+  placeholder,
+}: GenericAutoFilterDropdownProps<T>) => {
   const [inputValue, setInputValue] = useState("");
   const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
 
-  const filteredOptions = planets.filter(
-    (planet) =>
-      inputValue && planet.name.toLowerCase().includes(inputValue.toLowerCase())
-  );
+  const filteredOptions = listOfData.filter((data: T) => {
+    const value = data[keyLabel];
+    return (
+      inputValue &&
+      typeof value === "string" &&
+      value.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     setDropdownIsVisible(true);
   };
 
-  const handleSelect = (option: Planet) => {
-    setInputValue(option.name);
+  const handleSelect = (option: T) => {
+    setInputValue(option[keyLabel] as string);
     setDropdownIsVisible(false);
   };
 
@@ -39,7 +36,7 @@ export const GenericAutoFilterDropdown: FunctionComponent = () => {
     <div className="generic-select">
       <input
         type="text"
-        placeholder={"Enter a Planet"}
+        placeholder={placeholder}
         value={inputValue}
         onChange={handleInputChange}
       />
@@ -48,10 +45,10 @@ export const GenericAutoFilterDropdown: FunctionComponent = () => {
           return (
             <div
               className="generic-option"
-              key={option.name}
+              key={option[keyLabel] as string}
               onClick={() => handleSelect(option)}
             >
-              {option.name}
+              {option[keyLabel] as string}
             </div>
           );
         })}
