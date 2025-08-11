@@ -1,4 +1,4 @@
-import type { FunctionComponent } from "react";
+import { useState, type FunctionComponent } from "react";
 import { GenericAutoFilterDropdown } from "./components/genericAutoFilterDropdown.component";
 
 const planets = [
@@ -13,13 +13,18 @@ const planets = [
 ];
 
 const App: FunctionComponent = () => {
+  const [selectedPlanet, setSelectedPlanet] = useState("");
+
   return (
     <>
       <h1>Generic auto-filter dropdown Demo</h1>
+      <h2>Planets</h2>
+      <p>{`Selected planet : ${selectedPlanet}`}</p>
       <GenericAutoFilterDropdown
         listOfData={planets}
         keyLabel={"name"}
         placeholder={"Enter a Planet"}
+        callback={setSelectedPlanet}
       />
     </>
   );

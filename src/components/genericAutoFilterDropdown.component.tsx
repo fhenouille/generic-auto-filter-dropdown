@@ -4,11 +4,13 @@ interface GenericAutoFilterDropdownProps<T> {
   listOfData: T[];
   keyLabel: keyof T;
   placeholder: string;
+  callback: (selectedValue: string) => void;
 }
 export const GenericAutoFilterDropdown = <T,>({
   listOfData,
   keyLabel,
   placeholder,
+  callback,
 }: GenericAutoFilterDropdownProps<T>) => {
   const [inputValue, setInputValue] = useState("");
   const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
@@ -25,11 +27,13 @@ export const GenericAutoFilterDropdown = <T,>({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     setDropdownIsVisible(true);
+    callback("");
   };
 
   const handleSelect = (option: T) => {
     setInputValue(option[keyLabel] as string);
     setDropdownIsVisible(false);
+    callback(option[keyLabel] as string);
   };
 
   //The matching portion(s) of the option label should be rendered in bold text
