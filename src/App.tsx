@@ -1,9 +1,13 @@
-function App() {
+import type { FunctionComponent } from "react";
+import { GenericAutoFilterDropdown } from "./components/genericAutoFilterDropdown.component";
+
+const App: FunctionComponent = () => {
   return (
     <>
-      <h1>Exercise #3</h1>
+      <h1>Generic auto-filter dropdown Demo</h1>
+      <GenericAutoFilterDropdown />
     </>
   );
-}
+};
 
 export default App;

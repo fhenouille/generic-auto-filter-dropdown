@@ -1,0 +1,31 @@
+.generic-select {
+  width: 250px;
+}
+
+.generic-select input {
+  width: 100%;
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+
+.generic-dropdown {
+  border: 1px solid black;
+  border-bottom: none;
+  border-top: none;
+  display: none;
+}
+
+.generic-dropdown.visible {
+  display: block;
+}
+
+.generic-option {
+  border-bottom: 1px solid black;
+  padding-left: 10px;
+  cursor: pointer;
+  background-color: whitesmoke;
+}
+
+.generic-option:hover {
+  background-color: burlywood;
+}
