@@ -73,7 +73,9 @@ export const GenericAutoFilterDropdown = <T,>({
             <div
               className="generic-option"
               key={option[keyLabel] as string}
-              onClick={() => handleSelect(option)}
+              onClick={() => {
+                handleSelect(option);
+              }}
             >
               {handleBoldStyleOnOptionLabel(option[keyLabel] as string)}
             </div>

@@ -12,7 +12,7 @@ const planets = [
   { name: "Neptune", diameter_km: 49244 },
 ];
 
-type User = {
+interface User {
   id: number;
   name: string;
   username: string;
@@ -34,7 +34,7 @@ type User = {
     catchPhrase: string;
     bs: string;
   };
-};
+}
 
 const App: FunctionComponent = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -42,9 +42,11 @@ const App: FunctionComponent = () => {
   const [selectedUser, setSelectedUser] = useState("");
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
+    void fetch("https://jsonplaceholder.typicode.com/users")
       .then((res) => res.json())
-      .then((data) => setUsers(data));
+      .then((data: User[]) => {
+        setUsers(data);
+      });
   }, []);
 
   return (
@@ -56,7 +58,9 @@ const App: FunctionComponent = () => {
         listOfData={planets}
         keyLabel={"name"}
         placeholder={"Enter a Planet"}
-        valueChange={(item) => setSelectedPlanet(item?.name ?? "")}
+        valueChange={(item) => {
+          setSelectedPlanet(item?.name ?? "");
+        }}
       />
       <h2>Users by email</h2>
       <p>{`Selected user : ${selectedUser}`}</p>
@@ -64,9 +68,9 @@ const App: FunctionComponent = () => {
         listOfData={users}
         keyLabel={"email"}
         placeholder={"Enter an email"}
-        valueChange={(item) =>
-          setSelectedUser(item?.email ? `${item?.name} - ${item?.email}` : "")
-        }
+        valueChange={(item) => {
+          setSelectedUser(item?.email ? `${item.name} - ${item.email}` : "");
+        }}
       />
     </>
   );
